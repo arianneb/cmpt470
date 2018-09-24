@@ -42,7 +42,7 @@ end define
 define single_line
     [data_type] [variable_declaration]
     | [variable_assignment]
-    | [print_statement]
+    | [print_or_scan]
     | [return_statement]
 end define
 
@@ -92,13 +92,26 @@ end define
 
 define op
     '+
+    |'*
     |'-
 end define
 
 
-% Print Statement
-define print_statement
-    printf([stringlit]); [NL]
+% Print and Scan Statements
+define print_or_scan
+    printf([print_scan_content]); [NL]
+    | scanf([print_scan_content]); [NL]
+
+end define
+
+define print_scan_content
+    [stringlit]
+    | [stringlit], [id]
+    | [stringlit], [special] [id]
+end define
+
+define special
+    '&
 end define
 
 
