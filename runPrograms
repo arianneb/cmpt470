@@ -1,0 +1,5 @@
+#!/bin/bash
+
+./txl10.6e.linux64/bin/txl MakeCgrammar/1a.Txl MakeCgrammar/1abc_input.c
+./txl10.6e.linux64/bin/txl MakeCgrammar/1a.Txl MakeCgrammar/2_input.c
+./txl10.6e.linux64/bin/txl MakeCgrammar/1a.Txl MakeCgrammar/3_input.c
