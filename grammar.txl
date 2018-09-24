@@ -5,10 +5,6 @@
 
 % Grammar:
 
-% keys
-%   int char
-% end keys
-
 
 % C Program
 define program
@@ -43,7 +39,7 @@ define function_body
 end define
 
 
-% Single lines of code
+% Single line of code
 define single_line
     [variable_declaration] [NL]
     | [print_statement] [NL]
@@ -51,7 +47,8 @@ define single_line
 end define
 
 define variable_declaration
-    [data_type] [id];
+    [data_type] [variable_name]
+    | [data_type] [repeat variable_name]
 end define
 
 define data_type
@@ -59,12 +56,15 @@ define data_type
     | 'char
 end define
 
+define variable_name
+    [id],
+    | [id]; [NL]
+end define
+
 define print_statement
     printf([stringlit]); [NL]
 end define
 
-
-% Function Returns
 define return_statement
     return [return_value]; [NL][EX]
 end define
