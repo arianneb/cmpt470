@@ -53,6 +53,8 @@ end define
 
 define data_type
     'const [type]
+    | 'unsigned [type]
+    | 'signed [type]
     | [type]
 end define
 
