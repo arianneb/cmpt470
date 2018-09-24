@@ -66,7 +66,7 @@ define type
 end define
 
 define variable_assignment
-    [variable_name] = [value]; [NL] 
+    [variable_name] = [assigned_value]; [NL] 
 end define
 
 define variable_name
@@ -75,17 +75,34 @@ define variable_name
     | [id]; [NL]
 end define
 
+define assigned_value
+    [value]
+    | [expression]
+end define
+
 define value
     [number]
     | [floatnumber]
     | [charlit]
 end define
 
+define expression
+    [id] [op] [value]
+end define
 
+define op
+    '+
+    |'-
+end define
+
+
+% Print Statement
 define print_statement
     printf([stringlit]); [NL]
 end define
 
+
+% Return Statement
 define return_statement
     return [return_value]; [NL][EX]
 end define
