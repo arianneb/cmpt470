@@ -40,15 +40,16 @@ end define
 
 % Single line of code
 define single_line
-    [variable_declaration] [NL]
-    | [print_statement] [NL]
-    | [return_statement] [NL]
+    [data_type] [variable_declaration]
+    | [variable_assignment]
+    | [print_statement]
+    | [return_statement]
 end define
 
 define variable_declaration
-    [data_type] [variable_name]
-    | [data_type] [repeat variable_name]
-    | [data_type] [variable_assignment]
+    [variable_name]
+    | [repeat variable_name]
+    | [variable_assignment]
 end define
 
 define data_type
@@ -65,7 +66,7 @@ define type
 end define
 
 define variable_assignment
-    [variable_name] = [value]; 
+    [variable_name] = [value]; [NL] 
 end define
 
 define variable_name
@@ -77,6 +78,7 @@ end define
 define value
     [number]
     | [floatnumber]
+    | [charlit]
 end define
 
 
