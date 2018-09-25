@@ -43,6 +43,7 @@ define single_line
     [data_type] [variable_declaration]
     | [variable_assignment]
     | [if_statement]
+    | [else_statement]
     | [print_or_scan]
     | [return_statement]
 end define
@@ -98,9 +99,14 @@ define op
     |'-
 end define
 
-% If Statements
+
+% If Else Statements
 define if_statement
-    if ( [conditional] ) [NL] [IN] [if_body] [EX]
+    if ( [conditional] ) [NL] [IN] [conditional_body] [EX]
+end define
+
+define else_statement
+    else [NL] [IN] [conditional_body] [EX]
 end define
 
 define conditional
@@ -112,10 +118,9 @@ define compare_op
     | '>
 end define
 
-define if_body
+define conditional_body
     [single_line]
 end define
-
 
 
 % Print and Scan Statements
