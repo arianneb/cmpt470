@@ -42,6 +42,7 @@ end define
 define single_line
     [data_type] [variable_declaration]
     | [variable_assignment]
+    | [if_statement]
     | [print_or_scan]
     | [return_statement]
 end define
@@ -84,6 +85,7 @@ define value
     [number]
     | [floatnumber]
     | [charlit]
+    | [id]
 end define
 
 define expression
@@ -95,6 +97,25 @@ define op
     |'*
     |'-
 end define
+
+% If Statements
+define if_statement
+    if ( [conditional] ) [NL] [IN] [if_body] [EX]
+end define
+
+define conditional
+    [id] [compare_op] [value]
+end define
+
+define compare_op
+    '<
+    | '>
+end define
+
+define if_body
+    [single_line]
+end define
+
 
 
 % Print and Scan Statements
@@ -111,7 +132,7 @@ define print_scan_content
 end define
 
 define special
-    '&
+    '& | '( | ')
 end define
 
 
