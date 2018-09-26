@@ -5,13 +5,13 @@
 % Grammar:
 % --------
 
-% C Program
+% C PROGRAM
 define program
     [c_function]
 end define
 
 
-% C Function
+% C FUNCTION
 define c_function
     [function_head] [NL]
 	{ [NL][IN]
@@ -20,7 +20,7 @@ define c_function
 end define
 
 
-% Functions pieces:
+% FUNCTION PIECES
 define function_head
     [return_type] [function_name] ()
 end define
@@ -34,16 +34,17 @@ define function_name
 end define
 
 define function_body
-    [repeat single_line] [NL]
+    [repeat single_entity] [NL]
 end define
 
 
-% Single line of code
-define single_line
+% SINGLE ENTITY OF CODE
+define single_entity
     [data_type] [variable_declaration]
     | [variable_assignment]
     | [if_statement]
     | [else_statement]
+    | [switch_statement]
     | [print_or_scan]
     | [return_statement]
 end define
@@ -100,7 +101,7 @@ define op
 end define
 
 
-% If Else Statements
+% IF ELSE STATEMENTS
 define if_statement
     if ( [conditional] ) [NL] [conditional_body]
     
@@ -133,12 +134,12 @@ define compare_op
 end define
 
 define conditional_body
-    { [NL] [IN] [repeat single_line] [NL] [EX] } [NL]
-    | [IN] [single_line] [EX]
+    { [NL] [IN] [repeat single_entity] [NL] [EX] } [NL]
+    | [IN] [single_entity] [EX]
 end define
 
 
-% Print and Scan Statements
+% PRINT AND SCAN STATEMENT
 define print_or_scan
     printf([print_scan_content]); [NL]
     | scanf([print_scan_content]); [NL]
@@ -152,11 +153,30 @@ define print_scan_content
 end define
 
 define special
-    '& | '! | '|
+    '& | '! | ': | '|
 end define
 
 
-% Return Statement
+% SWITCH STATEMENT
+
+define switch_statement
+    [id] ([id]) [NL] { [NL] [IN] [repeat case_statement] [default] [EX] [NL] } [NL]
+end define
+
+define case_statement
+    [id] [value] [special] [NL] [IN] [single_entity] [break]
+end define
+
+define break
+    [id]; [NL] [EX]
+end define
+
+define default
+    [id] [special] [NL] [IN] [single_entity] [EX] [NL]
+end define
+
+
+% RETURN STATEMENT
 define return_statement
     return [return_value]; [EX]
 end define
@@ -166,7 +186,7 @@ define return_value
 end define
 
 
-% Rules:
+% RULES
 
 function main
     match [program]

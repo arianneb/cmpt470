@@ -1,5 +1,15 @@
 #!/bin/bash
 
-./txl10.6e.linux64/bin/txl MakeCgrammar/1a.Txl MakeCgrammar/1abc_input.c
-./txl10.6e.linux64/bin/txl MakeCgrammar/1a.Txl MakeCgrammar/2_input.c
-./txl10.6e.linux64/bin/txl MakeCgrammar/1a.Txl MakeCgrammar/3_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/1abc_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/2_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/3_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/4_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/5_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/6_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/7_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/8_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/9_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/10_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/11_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/12_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/13_input.c
