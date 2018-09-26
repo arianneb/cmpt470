@@ -54,6 +54,7 @@ define single_entity
     | [switch_statement]
     | [for_loop]
     | [while_loop]
+    | [dowhile_loop]
     | [print_or_scan]
     | [increment]
     | [return_statement]
@@ -209,6 +210,14 @@ end define
 
 define while_loop
     [id] [conditional] [NL] [loop_body] [NL]
+end define
+
+
+
+% DO WHILE LOOP
+
+define dowhile_loop
+    [id] [NL] [loop_body] [id] [conditional]; [NL]    
 end define
 
 
