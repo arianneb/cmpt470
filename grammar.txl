@@ -53,13 +53,16 @@ define single_entity
     | [else_statement]
     | [switch_statement]
     | [for_loop]
+    | [while_loop]
     | [print_or_scan]
+    | [increment]
     | [return_statement]
 end define
 
 
 
 % VARIABLE DECLARATION AND ASSIGNMENT
+
 define variable_declaration
     [variable_name]
     | [repeat variable_name]
@@ -125,14 +128,19 @@ define else_statement
     else [NL] [conditional_body]
 end define
 
+
+
+% CONDITIONALS
+
 define conditional
     [single_condition]
     | [multi_condition]
 end define
 
 define single_condition
-    [id] [repeat compare_op] [value]
-    | [special] ( [id] [repeat compare_op] [value] )
+    [compare_value] [repeat compare_op] [compare_value]
+    | ( [compare_value] [repeat compare_op] [compare_value] )
+    | [special] ( [compare_value] [repeat compare_op] [compare_value] )
 end define
 
 define multi_condition
@@ -145,6 +153,11 @@ end define
 
 define compare_op
     '< | '> | '=
+end define
+
+define compare_value
+    [value]
+    | [id]
 end define
 
 define conditional_body
@@ -182,10 +195,20 @@ end define
 
 define increment
     [id] [op] [op]
+    | [id] [op] [op]; [NL]
 end define
 
 define loop_body
     [IN] [single_entity] [EX]
+    | { [NL] [IN] [repeat single_entity] [NL] [EX] }
+end define
+
+
+
+% WHILE LOOP
+
+define while_loop
+    [id] [conditional] [NL] [loop_body] [NL]
 end define
 
 
