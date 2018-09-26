@@ -6,12 +6,15 @@
 % --------
 
 % C PROGRAM
+
 define program
     [c_function]
 end define
 
 
+
 % C FUNCTION
+
 define c_function
     [function_head] [NL]
 	{ [NL][IN]
@@ -20,7 +23,9 @@ define c_function
 end define
 
 
+
 % FUNCTION PIECES
+
 define function_head
     [return_type] [function_name] ()
 end define
@@ -38,17 +43,23 @@ define function_body
 end define
 
 
-% SINGLE ENTITY OF CODE
+
+% SINGLE CODE ENTITIES
+
 define single_entity
     [data_type] [variable_declaration]
     | [variable_assignment]
     | [if_statement]
     | [else_statement]
     | [switch_statement]
+    | [for_loop]
     | [print_or_scan]
     | [return_statement]
 end define
 
+
+
+% VARIABLE DECLARATION AND ASSIGNMENT
 define variable_declaration
     [variable_name]
     | [repeat variable_name]
@@ -69,7 +80,8 @@ define type
 end define
 
 define variable_assignment
-    [variable_name] = [assigned_value]; [NL] 
+    [variable_name] = [assigned_value]
+    | [variable_name] = [assigned_value]; [NL] 
 end define
 
 define variable_name
@@ -101,7 +113,9 @@ define op
 end define
 
 
+
 % IF ELSE STATEMENTS
+
 define if_statement
     if ( [conditional] ) [NL] [conditional_body]
     
@@ -139,23 +153,6 @@ define conditional_body
 end define
 
 
-% PRINT AND SCAN STATEMENT
-define print_or_scan
-    printf([print_scan_content]); [NL]
-    | scanf([print_scan_content]); [NL]
-
-end define
-
-define print_scan_content
-    [stringlit]
-    | [stringlit], [id]
-    | [stringlit], [special] [id]
-end define
-
-define special
-    '& | '! | ': | '|
-end define
-
 
 % SWITCH STATEMENT
 
@@ -176,7 +173,45 @@ define default
 end define
 
 
+
+% FOR LOOP
+
+define for_loop
+    [id] ( [variable_assignment]; [single_condition]; [increment] ) [NL] [loop_body]
+end define
+
+define increment
+    [id] [op] [op]
+end define
+
+define loop_body
+    [IN] [single_entity] [EX]
+end define
+
+
+
+% PRINT AND SCAN STATEMENTS
+
+define print_or_scan
+    printf([print_scan_content]); [NL]
+    | scanf([print_scan_content]); [NL]
+
+end define
+
+define print_scan_content
+    [stringlit]
+    | [stringlit], [id]
+    | [stringlit], [special] [id]
+end define
+
+define special
+    '& | '! | ': | '|
+end define
+
+
+
 % RETURN STATEMENT
+
 define return_statement
     return [return_value]; [EX]
 end define
@@ -184,6 +219,7 @@ end define
 define return_value
     [number]
 end define
+
 
 
 % RULES
