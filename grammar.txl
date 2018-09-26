@@ -102,11 +102,11 @@ end define
 
 % If Else Statements
 define if_statement
-    if ( [conditional] ) [NL] [IN] [conditional_body] [EX]
+    if ( [conditional] ) [NL] [conditional_body]
 end define
 
 define else_statement
-    else [NL] [IN] [conditional_body] [EX]
+    else [NL] [conditional_body]
 end define
 
 define conditional
@@ -119,7 +119,8 @@ define compare_op
 end define
 
 define conditional_body
-    [single_line]
+    { [NL] [IN] [repeat single_line] [NL] [EX] } [NL]
+    | [IN] [single_line] [EX]
 end define
 
 
@@ -137,7 +138,7 @@ define print_scan_content
 end define
 
 define special
-    '& | '( | ')
+    '&
 end define
 
 
