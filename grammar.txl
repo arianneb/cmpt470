@@ -103,6 +103,7 @@ end define
 % If Else Statements
 define if_statement
     if ( [conditional] ) [NL] [conditional_body]
+    
 end define
 
 define else_statement
@@ -110,12 +111,25 @@ define else_statement
 end define
 
 define conditional
-    [id] [compare_op] [value]
+    [single_condition]
+    | [multi_condition]
+end define
+
+define single_condition
+    [id] [repeat compare_op] [value]
+    | [special] ( [id] [repeat compare_op] [value] )
+end define
+
+define multi_condition
+    [single_condition] [add_condition]
+end define
+
+define add_condition
+    [repeat special+] [single_condition] 
 end define
 
 define compare_op
-    '<
-    | '>
+    '< | '> | '=
 end define
 
 define conditional_body
@@ -138,13 +152,13 @@ define print_scan_content
 end define
 
 define special
-    '&
+    '& | '! | '|
 end define
 
 
 % Return Statement
 define return_statement
-    return [return_value]; [NL][EX]
+    return [return_value]; [EX]
 end define
 
 define return_value
