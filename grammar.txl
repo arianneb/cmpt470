@@ -5,10 +5,22 @@
 % Grammar:
 % --------
 
+% SPECIAL TOKENS
+tokens
+    include     "\#(include)(<)[\u]+(.)[hc](>)"
+    id ... |    "[(&)(*)(\u)]\i+"
+    compound_op "[<>=+-]+"
+    increment   "[\u]+(++)"
+    continue    "continue"
+end tokens
+
+
+
 % C PROGRAM
 
 define program
     [c_function]
+    | [token] [NL] [NL] [c_function]
 end define
 
 
@@ -55,8 +67,9 @@ define single_entity
     | [for_loop]
     | [while_loop]
     | [dowhile_loop]
-    | [print_or_scan]
     | [increment]
+    | [break_continue]
+    | [print_or_scan]
     | [return_statement]
 end define
 
@@ -112,8 +125,9 @@ end define
 
 define op
     '+
-    |'*
-    |'-
+    | '*
+    | '-
+    | '/
 end define
 
 
@@ -139,9 +153,9 @@ define conditional
 end define
 
 define single_condition
-    [compare_value] [repeat compare_op] [compare_value]
-    | ( [compare_value] [repeat compare_op] [compare_value] )
-    | [special] ( [compare_value] [repeat compare_op] [compare_value] )
+    [compare_value] [compound_op] [compare_value]
+    | ( [compare_value] [compound_op] [compare_value] )
+    | [special] ( [compare_value] [compound_op] [compare_value] )
 end define
 
 define multi_condition
@@ -152,10 +166,6 @@ define add_condition
     [repeat special+] [single_condition] 
 end define
 
-define compare_op
-    '< | '> | '=
-end define
-
 define compare_value
     [value]
     | [id]
@@ -164,7 +174,7 @@ end define
 define conditional_body
     { [NL] [IN] [repeat single_entity] [NL] [EX] } [NL]
     | [IN] [single_entity] [EX]
-    | [IN] [break]
+    | [IN] [break_continue]
 end define
 
 
@@ -176,11 +186,12 @@ define switch_statement
 end define
 
 define case_statement
-    [id] [value] [special] [NL] [IN] [single_entity] [break]
+    [id] [value] [special] [NL] [IN] [single_entity] [break_continue] [EX]
 end define
 
-define break
-    [id]; [NL] [EX]
+define break_continue
+    [token]; [NL]
+    | [id]; [NL] [EX]
 end define
 
 define default
@@ -192,12 +203,12 @@ end define
 % FOR LOOP
 
 define for_loop
-    [id] ( [variable_assignment]; [single_condition]; [increment] ) [NL] [loop_body]
+    [id] ( [variable_assignment]; [single_condition]; [increment_value] ) [NL] [loop_body]
 end define
 
-define increment
-    [id] [op] [op]
-    | [id] [op] [op]; [NL]
+define increment_value
+    [token]
+    | [token]; [NL]
 end define
 
 define loop_body
@@ -238,7 +249,7 @@ define print_scan_content
 end define
 
 define special
-    '& | '! | ': | '|
+    '& | '! | ': | '# | '< | '> | '. '|
 end define
 
 

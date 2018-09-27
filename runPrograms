@@ -16,3 +16,5 @@
 ./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/14_input.c
 ./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/15_input.c
 ./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/16_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/17_input.c
+./txl10.6e.linux64/bin/txl grammar.txl MakeCgrammar/18_input.c
