@@ -164,6 +164,7 @@ end define
 define conditional_body
     { [NL] [IN] [repeat single_entity] [NL] [EX] } [NL]
     | [IN] [single_entity] [EX]
+    | [IN] [break]
 end define
 
 
