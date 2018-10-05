@@ -1,0 +1,10 @@
+#!/bin/bash
+
+./txl10.6e.linux64/bin/txl grammar.txl MiniCgrammar/StartingInput.c
+./txl10.6e.linux64/bin/txl grammar.txl MiniCgrammar/input_1.c
+./txl10.6e.linux64/bin/txl grammar.txl MiniCgrammar/input_2.c
+./txl10.6e.linux64/bin/txl grammar.txl MiniCgrammar/input_3.c
+./txl10.6e.linux64/bin/txl grammar.txl MiniCgrammar/input_4.c
+./txl10.6e.linux64/bin/txl grammar.txl MiniCgrammar/input_5.c
+./txl10.6e.linux64/bin/txl grammar.txl MiniCgrammar/test_input1.c
+./txl10.6e.linux64/bin/txl grammar.txl MiniCgrammar/test_input2.c

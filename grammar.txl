@@ -7,12 +7,20 @@
 
 % SPECIAL TOKENS
 tokens
-    include     "\#(include)(<)[\u]+(.)[hc](>)"
-    id ... |    "[(&)(*)(\u)]\i+"
-    compound_op "[<>=+-]+"
-    increment   "[\u]+(++)"
-    continue    "continue"
+    include_file    "\#(include)(<)[\u]+(.)[hc](>)"
+    id ... |        "[(&)(!)(*)(\u)(:)]\i+"
+    compound_op     "[&|<>=+-]+"
+    increment       "[\u]+[ \t]*[(++)(--)]"
+    continue        "continue"
+    return          "return"
 end tokens
+
+
+% COMMENTS
+comments
+    //
+    /* */
+end comments
 
 
 
@@ -20,7 +28,16 @@ end tokens
 
 define program
     [c_function]
-    | [token] [NL] [NL] [c_function]
+    | [single_include] [NL] [c_function]
+    | [multi_include] [NL] [c_function]
+end define
+
+define single_include
+    [include_file] [NL]
+end define
+
+define multi_include
+    [repeat single_include] 
 end define
 
 
@@ -30,7 +47,7 @@ end define
 define c_function
     [function_head] [NL]
 	{ [NL][IN]
-	  [function_body]
+	  [function_body] [EX]
 	}
 end define
 
@@ -51,7 +68,7 @@ define function_name
 end define
 
 define function_body
-    [repeat single_entity] [NL]
+    [repeat single_entity]
 end define
 
 
@@ -59,7 +76,7 @@ end define
 % SINGLE CODE ENTITIES
 
 define single_entity
-    [data_type] [variable_declaration]
+    [variable_declaration]
     | [variable_assignment]
     | [if_statement]
     | [else_statement]
@@ -67,7 +84,7 @@ define single_entity
     | [for_loop]
     | [while_loop]
     | [dowhile_loop]
-    | [increment]
+    | [increment_value]
     | [break_continue]
     | [print_or_scan]
     | [return_statement]
@@ -78,8 +95,9 @@ end define
 % VARIABLE DECLARATION AND ASSIGNMENT
 
 define variable_declaration
-    [variable_name]
-    | [repeat variable_name]
+    [data_type] [variable_name]
+    | [data_type] [repeat variable_name]
+    | [data_type] [variable_assignment]
     | [variable_assignment]
 end define
 
@@ -121,6 +139,7 @@ end define
 
 define expression
     [id] [op] [value]
+    | [id] [op] [value]; [NL]
 end define
 
 define op
@@ -136,7 +155,6 @@ end define
 
 define if_statement
     if ( [conditional] ) [NL] [conditional_body]
-    
 end define
 
 define else_statement
@@ -163,7 +181,7 @@ define multi_condition
 end define
 
 define add_condition
-    [repeat special+] [single_condition] 
+    [compound_op] [single_condition] 
 end define
 
 define compare_value
@@ -172,7 +190,7 @@ define compare_value
 end define
 
 define conditional_body
-    { [NL] [IN] [repeat single_entity] [NL] [EX] } [NL]
+    { [NL] [IN] [repeat single_entity] [EX] } [NL]
     | [IN] [single_entity] [EX]
     | [IN] [break_continue]
 end define
@@ -182,11 +200,14 @@ end define
 % SWITCH STATEMENT
 
 define switch_statement
-    [id] ([id]) [NL] { [NL] [IN] [repeat case_statement] [default] [EX] [NL] } [NL]
+    [id] ([id]) [NL] { 
+    [NL] [IN] [repeat case_statement] [default] [EX] 
+    } [NL]
 end define
 
 define case_statement
-    [id] [value] [special] [NL] [IN] [single_entity] [break_continue] [EX]
+    [id] [value] [special] 
+    [NL] [IN] [single_entity] [break_continue] [EX]
 end define
 
 define break_continue
@@ -195,7 +216,7 @@ define break_continue
 end define
 
 define default
-    [id] [special] [NL] [IN] [single_entity] [EX] [NL]
+    [id] [special] [NL] [IN] [single_entity] [EX]
 end define
 
 
@@ -203,17 +224,20 @@ end define
 % FOR LOOP
 
 define for_loop
-    [id] ( [variable_assignment]; [single_condition]; [increment_value] ) [NL] [loop_body]
+    [id] ( [variable_declaration]; [single_condition]; [increment_value] ) 
+    [NL] [loop_body]
 end define
 
 define increment_value
-    [token]
-    | [token]; [NL]
+    [increment]
+    | [increment]; [NL]
+    | [id] [compound_op]
+    | [id] [compound_op]; [NL]
 end define
 
 define loop_body
     [IN] [single_entity] [EX]
-    | { [NL] [IN] [repeat single_entity] [NL] [EX] }
+    | { [NL] [IN] [repeat single_entity] [EX] } [NL]
 end define
 
 
@@ -221,7 +245,7 @@ end define
 % WHILE LOOP
 
 define while_loop
-    [id] [conditional] [NL] [loop_body] [NL]
+    [id] [conditional] [NL] [loop_body]
 end define
 
 
@@ -229,7 +253,12 @@ end define
 % DO WHILE LOOP
 
 define dowhile_loop
-    [id] [NL] [loop_body] [id] [conditional]; [NL]    
+    [id] [NL] [dowhile_body] [id] [conditional]; [NL]    
+end define
+
+define dowhile_body
+    [IN] [single_entity] [EX]
+    | { [NL] [IN] [repeat single_entity] [EX] }
 end define
 
 
@@ -245,11 +274,10 @@ end define
 define print_scan_content
     [stringlit]
     | [stringlit], [id]
-    | [stringlit], [special] [id]
 end define
 
 define special
-    '& | '! | ': | '# | '< | '> | '. '|
+    : | '! 
 end define
 
 
@@ -257,7 +285,7 @@ end define
 % RETURN STATEMENT
 
 define return_statement
-    return [return_value]; [EX]
+    [token] [return_value]; [NL]
 end define
 
 define return_value
